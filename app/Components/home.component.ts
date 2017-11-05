@@ -1,5 +1,5 @@
 ﻿//import { Component } from "@angular/core";
-
+//This is a login page which I have done during the sunday practice
 //@Component({
 //    template: `<img src="../../images/users.png" style="text-align:center"/>`
 //})
