@@ -1,0 +1,111 @@
+﻿<script src="node_modules/ng2-bs3-modal/bundles/ng2-bs3-modal.system.js"></script>
+
+<div class='panel panel-primary'>
+    <div class='panel-heading'>
+        Product Management
+    </div>
+    <div class='panel-body'>
+        <div class='table-responsive'>
+            <div>
+                <search-list [title]='searchTitle' (change)="criteriaChange($event)"></search-list>
+            </div>
+
+
+            <div style="padding-bottom:10px"><button class="btn btn-primary" (click)="addProduct()">Add</button></div>
+            <div class="alert alert-info" role="alert" *ngIf="indLoading"><img src="../../images/loading.gif" width="32" height="32" /> Loading...</div>
+            <div *ngIf='product && products.length==0' class="alert alert-info" role="alert">No record found!</div>
+            <table class='table table-striped' *ngIf='products && products.length'>
+                <thead>
+                    <tr>
+                        <th>MaterialCode</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>UOM</th>
+                        <th>MaterialType</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let product of products | productFilter:listFilter">
+                        <td>{{product.MaterialCode}}</td>
+                        <td>{{product.Description}}</td>
+                        <td>{{product.Price}}</td>
+                        <td>{{product.UOM}}</td>
+                        <td>{{product.MaterialType}}</td>                        
+                        <td>
+                            <button title="Edit" class="btn btn-primary" (click)="editProduct(product.Id)">Edit</button>
+                            <button title="Delete" class="btn btn-danger" (click)="deleteProduct(product.Id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+        <div *ngIf="msg" role="alert" class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            {{msg}}
+        </div>
+    </div>
+</div>
+
+<modal #modal>
+    <form novalidate (ngSubmit)="onSubmit(productFrm)" [formGroup]="productFrm">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{modalTitle}}</h4>
+        </modal-header>
+        <modal-body>
+
+            <div class="form-group">
+                <div>
+                    <span>MaterialCode*</span>
+                    <input type="text" class="form-control" placeholder="MaterialCode" formControlName="MaterialCode">
+                </div>
+                <div>
+                    <span>Description</span>
+                    <input type="text" class="form-control" placeholder="Description" formControlName="Description">
+                </div>
+                <div>
+                    <span>Price</span>
+                    <input type="text" class="form-control" placeholder="Price" formControlName="Price">
+                </div>
+               
+                
+                
+               
+                <div>
+                    <span>UOM*</span>
+                    <select formControlName="UOM" class="form-control">
+                        <option>Each</option>
+                        <option>Dozen</option>
+                        <option>Ton</option>
+                        <option>Kg</option>
+                        <option>Bottle</option>
+                        <option>SQT</option>
+                        <option>Roll</option>
+                        
+                    </select>
+                </div>
+                <div>
+                    <span>MaterialType*</span>
+                    <select formControlName="MaterialType" class="form-control">
+                        <option>Semi-Finished Goods</option>
+                        <option>Finished Goods</option>
+                        <option>Raw Goods</option>
+                        <option>Trading Goods</option>
+                        
+                    </select>
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div>
+                <a class="btn btn-default" (click)="modal.dismiss()">Cancel</a>
+                <button type="submit" [disabled]="productFrm.invalid" class="btn btn-primary">{{modalBtnTitle}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
